@@ -25,11 +25,17 @@
 @property (nonatomic, retain) ASIHTTPRequest *labelRequest;
 @property (nonatomic, retain) NSString *shortLabel;
 
+- (id)initWithShortLabel:(NSString *)shortLabel;
+
 - (IBAction)moveToNextPage;
 - (IBAction)moveToPreviousPage;
 - (IBAction)togglePlayPause;
 - (void)buildMapLabels;
 - (void)displayPage:(int)page;
 - (void)enableDisableButtons;
+
+- (void)fetchAllPages;
+- (void)queueLabelsForFetch;
+- (void)queuePageForFetch:(int)page;
 
 @end

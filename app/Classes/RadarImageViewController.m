@@ -10,10 +10,10 @@
 @synthesize labelRequest;
 @synthesize shortLabel;
 
-- (id) initWithShortLabel:(NSString *)shortLabel {
+- (id) initWithShortLabel:(NSString *)_shortLabel {
   self = [super init];
   if (self != nil) {
-    self.shortLabel = shortLabel;
+    self.shortLabel = _shortLabel;
     calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSCalendarUnit unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
     NSDate *dateToday = [NSDate date];
@@ -95,13 +95,9 @@
 }
 
 - (void)requestReturned:(ASIHTTPRequest *)request {
-  NSLog(@"Request returned.");
-  
   if ([[request userInfo] objectForKey:@"labelRequest"] == [NSNumber numberWithBool:YES]) {
     self.labelRequest = [request retain];
-    NSLog(@"Label request");
   } else {  
-    NSLog(@"Not a label request");
     NSData *data = [request responseData];
     UIImage *image = [[UIImage alloc] initWithData:data];
     
