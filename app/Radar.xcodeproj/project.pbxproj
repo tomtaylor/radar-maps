@@ -15,6 +15,9 @@
 		2899E5600DE3E45000AC0155 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E55F0DE3E45000AC0155 /* RootViewController.xib */; };
 		28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
 		28C286E10D94DF7D0034E888 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C286E00D94DF7D0034E888 /* RootViewController.m */; };
+		E243C4DD0FBA064A00E40DAA /* libThree20.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E243C4DC0FBA064800E40DAA /* libThree20.a */; };
+		E243C4E50FBA069000E40DAA /* Three20.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E243C4E40FBA069000E40DAA /* Three20.bundle */; };
+		E243C5020FBA06AC00E40DAA /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E243C5010FBA06AC00E40DAA /* QuartzCore.framework */; };
 		E2502AF10FA4CF9B00038A25 /* RadarArea.m in Sources */ = {isa = PBXBuildFile; fileRef = E2502AF00FA4CF9B00038A25 /* RadarArea.m */; };
 		E265D7860FA38755007129F2 /* RadarImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E265D7850FA38755007129F2 /* RadarImageViewController.m */; };
 		E265D78A0FA3876C007129F2 /* RadarImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E265D7890FA3876C007129F2 /* RadarImageView.xib */; };
@@ -92,6 +95,23 @@
 		E295DA570FBA0082001F55A4 /* GDataAtomCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = E295D8E40FBA0081001F55A4 /* GDataAtomCollection.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		E243C4DB0FBA064800E40DAA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E243C4D70FBA064800E40DAA /* Three20.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BEF31F3A0F352DF5000DE5D2 /* libThree20.a */;
+			remoteInfo = Three20;
+		};
+		E243C4E10FBA065900E40DAA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E243C4D70FBA064800E40DAA /* Three20.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = BEF31F390F352DF5000DE5D2 /* Three20 */;
+			remoteInfo = Three20;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* RadarAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadarAppDelegate.h; sourceTree = "<group>"; };
@@ -106,6 +126,9 @@
 		28C286E00D94DF7D0034E888 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E243C4D70FBA064800E40DAA /* Three20.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Three20.xcodeproj; path = ../vendor/three20/src/Three20.xcodeproj; sourceTree = SOURCE_ROOT; };
+		E243C4E40FBA069000E40DAA /* Three20.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Three20.bundle; path = ../vendor/three20/src/Three20.bundle; sourceTree = SOURCE_ROOT; };
+		E243C5010FBA06AC00E40DAA /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E2502AEF0FA4CF9B00038A25 /* RadarArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadarArea.h; sourceTree = "<group>"; };
 		E2502AF00FA4CF9B00038A25 /* RadarArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RadarArea.m; sourceTree = "<group>"; };
 		E265D7840FA38755007129F2 /* RadarImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RadarImageViewController.h; sourceTree = "<group>"; };
@@ -272,6 +295,8 @@
 				2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */,
 				E265D8B10FA3B48B007129F2 /* CFNetwork.framework in Frameworks */,
 				E265D8B30FA3B499007129F2 /* libz.1.2.3.dylib in Frameworks */,
+				E243C4DD0FBA064A00E40DAA /* libThree20.a in Frameworks */,
+				E243C5020FBA06AC00E40DAA /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,6 +337,7 @@
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				E265D8B00FA3B48B007129F2 /* CFNetwork.framework */,
 				E265D8B20FA3B499007129F2 /* libz.1.2.3.dylib */,
+				E243C5010FBA06AC00E40DAA /* QuartzCore.framework */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -347,9 +373,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E243C4D80FBA064800E40DAA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E243C4DC0FBA064800E40DAA /* libThree20.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		E265D8A00FA3B45F007129F2 /* Radar */ = {
 			isa = PBXGroup;
 			children = (
+				E243C4E40FBA069000E40DAA /* Three20.bundle */,
+				E243C4D70FBA064800E40DAA /* Three20.xcodeproj */,
 				E295D8500FBA0081001F55A4 /* GData Sources */,
 				E265D8A10FA3B467007129F2 /* ASIHTTPRequest */,
 			);
@@ -610,6 +646,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				E243C4E20FBA065900E40DAA /* PBXTargetDependency */,
 			);
 			name = Radar;
 			productName = Radar;
@@ -633,12 +670,28 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = E243C4D80FBA064800E40DAA /* Products */;
+					ProjectRef = E243C4D70FBA064800E40DAA /* Three20.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Radar */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		E243C4DC0FBA064800E40DAA /* libThree20.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libThree20.a;
+			remoteRef = E243C4DB0FBA064800E40DAA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1D60588D0D05DD3D006BFB54 /* Resources */ = {
@@ -649,6 +702,7 @@
 				2899E5600DE3E45000AC0155 /* RootViewController.xib in Resources */,
 				E265D78A0FA3876C007129F2 /* RadarImageView.xib in Resources */,
 				E265D7F20FA3993C007129F2 /* dot.png in Resources */,
+				E243C4E50FBA069000E40DAA /* Three20.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -738,6 +792,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		E243C4E20FBA065900E40DAA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Three20;
+			targetProxy = E243C4E10FBA065900E40DAA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -773,10 +835,16 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "/usr/include/libxml2/**";
+				HEADER_SEARCH_PATHS = (
+					"../vendor/three20/src/**",
+					"/usr/include/libxml2/**",
+				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DDEBUG=1";
-				OTHER_LDFLAGS = "-lxml2";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lxml2",
+				);
 				PREBINDING = NO;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B3A8655F-D3B0-46E8-9E3D-439540EDA89C";
 				SDKROOT = iphoneos2.2.1;

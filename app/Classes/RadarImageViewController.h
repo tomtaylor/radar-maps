@@ -1,11 +1,10 @@
 #import <UIKit/UIKit.h>
-#import "ASINetworkQueue.h"
-#import "ASIHTTPRequest.h"
+#import <Three20/Three20.h>
 
-@interface RadarImageViewController : UIViewController {
+@interface RadarImageViewController : UIViewController <TTURLRequestDelegate> {
   IBOutlet UIImageView *radarImageView;
   IBOutlet UIProgressView *myProgressView;
-  IBOutlet UILabel *loadingLabel;
+  IBOutlet TTSearchlightLabel *loadingLabel;
   IBOutlet UIBarButtonItem *forwardButton;
   IBOutlet UIBarButtonItem *rewindButton;
   IBOutlet UIBarButtonItem *playPauseButton;
@@ -14,15 +13,13 @@
   int selectedPage;
   BOOL firstImageDisplayed;
   BOOL playing;
-  ASINetworkQueue *networkQueue;
   NSMutableDictionary *radarImages;
-  ASIHTTPRequest *labelRequest;
+  NSData *labelData;
   NSTimer *playTimer;
   NSString *shortLabel;
 }
 
 @property (nonatomic, retain) IBOutlet UIImageView *radarImageView;
-@property (nonatomic, retain) ASIHTTPRequest *labelRequest;
 @property (nonatomic, retain) NSString *shortLabel;
 
 - (id)initWithShortLabel:(NSString *)shortLabel;

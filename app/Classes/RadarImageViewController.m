@@ -1,5 +1,5 @@
 #import "RadarImageViewController.h"
-#import "ASIHTTPRequest.h"
+
 #import "GDataXMLNode.h"
 
 #define MAX_PAGES 20;
@@ -7,7 +7,6 @@
 @implementation RadarImageViewController
 
 @synthesize radarImageView;
-@synthesize labelRequest;
 @synthesize shortLabel;
 
 - (id) initWithShortLabel:(NSString *)_shortLabel {
@@ -28,8 +27,6 @@
     
     startDate = [[calendar dateFromComponents:dateComponents] retain];
     
-    networkQueue = [[ASINetworkQueue alloc] init];
-    [networkQueue setMaxConcurrentOperationCount:4];
     radarImages = [[NSMutableDictionary alloc] init];
   }
   return self;
@@ -42,47 +39,44 @@
   rewindButton.enabled = NO;
   playPauseButton.enabled = NO;
   
+  loadingLabel.text = @"Loading...";
+  loadingLabel.font = [UIFont systemFontOfSize:25];
+  loadingLabel.textAlignment = UITextAlignmentCenter;
+  loadingLabel.contentMode = UIViewContentModeCenter;
+  [loadingLabel startAnimating];
+  
   [super viewDidLoad];
-  [myProgressView setProgress:0];
   [self fetchAllPages];
 }
 
-- (void)fetchAllPages {
-  [networkQueue setDelegate:self];
-  [networkQueue setRequestDidFinishSelector:@selector(requestReturned:)];
-  [networkQueue setRequestDidFailSelector:@selector(requestFailedToFetchImage:)];
-  [networkQueue setQueueDidFinishSelector:@selector(queueDidFinish:)];
-  [networkQueue setDownloadProgressDelegate:myProgressView];
-  
+- (void)fetchAllPages {  
   int max = MAX_PAGES;
   
   [self queueLabelsForFetch];
   for (int i = 0; i < max; i++) {
     [self queuePageForFetch:i];
   }
-  
-  [networkQueue go];
 }
 
 - (void)queueLabelsForFetch {
   NSString *urlString = [NSString stringWithFormat:@"http://news.bbc.co.uk/weather/map_presenter/%@/MapAreaNode.xml", self.shortLabel];
-  NSURL *url = [NSURL URLWithString:urlString];
-  ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
-  [request setUserInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:@"labelRequest"]];
-  [networkQueue addOperation:request];
+  TTURLRequest *request = [TTURLRequest requestWithURL:urlString delegate:self];
+  request.httpMethod = @"GET";
+  request.response = [[[TTURLDataResponse alloc] init] autorelease];
+  request.userInfo = [TTUserInfo topic:@"labels" strong:nil weak:self];
+  [request send];
 }
 
 - (void)queuePageForFetch:(int)page {
   NSDateComponents *offsetComponents = [[NSDateComponents alloc] init];
   [offsetComponents setHour:(3 * page)];
   NSDate *selectedDate = [calendar dateByAddingComponents:offsetComponents toDate:startDate options:0];
+  [offsetComponents release];
   
   NSCalendarUnit unitFlags = NSDayCalendarUnit | NSHourCalendarUnit;
   NSDateComponents *selectedDateComponents = [calendar components:unitFlags fromDate:selectedDate];
   NSString *urlString = [NSString stringWithFormat:@"http://newsimg.bbc.co.uk/weather/map_presenter/%02d/%02d/forecast/%@.jpg", [selectedDateComponents day], [selectedDateComponents hour], self.shortLabel];
   NSURL *url = [NSURL URLWithString:urlString];
-  
-  ASIHTTPRequest *request = [[[ASIHTTPRequest alloc] initWithURL:url] autorelease];
   
   NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
   [outputFormatter setAMSymbol:@""];
@@ -90,40 +84,50 @@
   [outputFormatter setDateFormat:@"EEEE haa"];
   NSString *title = [outputFormatter stringFromDate:selectedDate];
   [outputFormatter release];
-  [request setUserInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:page], @"page", title, @"title", nil]];
-  [networkQueue addOperation:request];
+  
+  NSDictionary *requestInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:page], @"page", title, @"title", nil];
+  TTURLRequest *request = [TTURLRequest requestWithURL:[url absoluteString] delegate:self];
+  request.httpMethod = @"GET";
+  request.response = [[[TTURLImageResponse alloc] init] autorelease];
+  request.userInfo = [TTUserInfo topic:@"page" strong:requestInfo weak:self];
+  [request send];
 }
 
-- (void)requestReturned:(ASIHTTPRequest *)request {
-  if ([[request userInfo] objectForKey:@"labelRequest"] == [NSNumber numberWithBool:YES]) {
-    self.labelRequest = [request retain];
-  } else {  
-    NSData *data = [request responseData];
-    UIImage *image = [[UIImage alloc] initWithData:data];
-    
-    NSDictionary *imageAndTitle = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                   image, @"image",
-                                   [[request userInfo] objectForKey:@"title"], @"title",
-                                   nil
-                                   ];
-    [image release];
-    [radarImages setObject:imageAndTitle forKey:[[request userInfo] objectForKey:@"page"]];
-    [imageAndTitle release];
+- (void)requestDidFinishLoad:(TTURLRequest*)request {
+  TTUserInfo *userInfo = request.userInfo;
+  
+  if ([userInfo.topic isEqualToString:@"page"]) {
+    [self handleSuccessfulPageRequest:request];
+  } else {
+    [self handleSuccessfulLabelsRequest:request];
   }
 }
 
-- (void)queueDidFinish:(ASINetworkQueue *)queue {
-  NSLog(@"Queue finished.");
-  [myProgressView removeFromSuperview];
-  [loadingLabel removeFromSuperview];
-  [self displayPage:selectedPage];
-  [self enableDisableButtons];
-  playPauseButton.enabled = YES;
+- (void)handleSuccessfulLabelsRequest:(TTURLRequest *)request {
+  TTURLDataResponse *response = request.response;
+  labelData = [response.data copy];
 }
 
-- (void)requestFailedToFetchImage:(ASIHTTPRequest *)request {
-  NSLog(@"Failed to fetch image.");
+- (void)handleSuccessfulPageRequest:(TTURLRequest *)request {
+  TTURLImageResponse *response = request.response;
+  TTUserInfo *userInfo = request.userInfo;
+  
+  NSDictionary *imageAndTitle = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                 response.image, @"image",
+                                 [userInfo.strong objectForKey:@"title"], @"title",
+                                 nil
+                                 ];
+  
+  NSNumber *pageNumber = [userInfo.strong objectForKey:@"page"];
+  [radarImages setObject:imageAndTitle forKey:pageNumber];
+  [imageAndTitle release];
+  
+  if ([pageNumber integerValue] == 0) {
+    [self enableDisableButtons];
+    [self displayPage:0];
+  }
 }
+
 
 - (void)displayPage:(int)page {
   [self.radarImageView setImage:[[radarImages objectForKey:[NSNumber numberWithInt:page]] objectForKey:@"image"]];
@@ -136,9 +140,8 @@
 }
 
 - (void)buildMapLabels {
-  NSData *xmlData = [labelRequest responseData];
   NSError *error;
-  GDataXMLDocument *document = [[GDataXMLDocument alloc] initWithData:xmlData options:XML_PARSE_NOCDATA error:&error];
+  GDataXMLDocument *document = [[GDataXMLDocument alloc] initWithData:labelData options:XML_PARSE_NOCDATA error:&error];
   GDataXMLElement *rootNode = [document rootElement];
   NSArray *placenameNodes = [rootNode nodesForXPath:@"//placename" error:&error];
   
@@ -170,6 +173,7 @@
     dotImageView.contentMode = UIViewContentModeCenter;
     dotImageView.center = CGPointMake(newX, newY);
     [self.view addSubview:dotImageView];
+    [dotImageView release];
         
     UILabel *textLabel = [[UILabel alloc] init];
     textLabel.font = [UIFont boldSystemFontOfSize:12];
@@ -188,6 +192,7 @@
 
     }
     [self.view addSubview:textLabel];
+    [textLabel release];
   }
 }
 
@@ -250,11 +255,9 @@
 }
 
 - (void)dealloc {
-  if (labelRequest)
-    [labelRequest release];
+  [labelData release];
   [radarImages release];
-  [networkQueue cancelAllOperations];
-  [networkQueue release];
+  [[TTURLRequestQueue mainQueue] cancelRequestsWithDelegate:self];
   [startDate release];
   [calendar release];
   [super dealloc];
