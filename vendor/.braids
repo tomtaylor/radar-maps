@@ -1,7 +1,0 @@
---- 
-gdata-objectivec-client: 
-  squashed: true
-  url: http://gdata-objectivec-client.googlecode.com/svn/trunk
-  type: svn
-  revision: 268
-  remote: braid/gdata-objectivec-client
