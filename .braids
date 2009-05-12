@@ -5,3 +5,10 @@ vendor/gdata-objectivec-client:
   type: svn
   revision: 268
   remote: braid/vendor/gdata-objectivec-client
+vendor/three20: 
+  squashed: true
+  url: git://github.com/joehewitt/three20.git
+  type: git
+  revision: 3b0044d421d2c0384278e2c19e2a472c6b799848
+  branch: master
+  remote: braid/vendor/three20
