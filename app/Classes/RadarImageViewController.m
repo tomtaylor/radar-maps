@@ -4,6 +4,14 @@
 
 #define MAX_PAGES 20;
 
+@interface RadarImageViewController(Private)
+
+- (void)handleSuccessfulLabelsRequest:(TTURLRequest *)request;
+- (void)handleSuccessfulPageRequest:(TTURLRequest *)request;
+
+@end
+
+
 @implementation RadarImageViewController
 
 @synthesize radarImageView;
@@ -33,20 +41,14 @@
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
-  
-  forwardButton.enabled = NO;
-  rewindButton.enabled = NO;
-  playPauseButton.enabled = NO;
-  
-  loadingLabel.text = @"Loading...";
-  loadingLabel.font = [UIFont systemFontOfSize:25];
-  loadingLabel.textAlignment = UITextAlignmentCenter;
-  loadingLabel.contentMode = UIViewContentModeCenter;
-  [loadingLabel startAnimating];
-  
-  [super viewDidLoad];
+//- (void)viewDidLoad {
+//  [self fetchAllPages];
+//  [super viewDidLoad];
+//}
+
+- (void)viewDidAppear:(BOOL)animated {
   [self fetchAllPages];
+  [super viewDidAppear:animated];
 }
 
 - (void)fetchAllPages {  
@@ -81,7 +83,7 @@
   NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
   [outputFormatter setAMSymbol:@""];
   [outputFormatter setPMSymbol:@""];
-  [outputFormatter setDateFormat:@"EEEE haa"];
+  [outputFormatter setDateFormat:@"EEEE HH':00'"];
   NSString *title = [outputFormatter stringFromDate:selectedDate];
   [outputFormatter release];
   
@@ -123,8 +125,8 @@
   [imageAndTitle release];
   
   if ([pageNumber integerValue] == 0) {
-    [self enableDisableButtons];
     [self displayPage:0];
+    [theSlider setEnabled:YES];
   }
 }
 
@@ -196,57 +198,9 @@
   }
 }
 
-- (IBAction)moveToNextPage {
-  selectedPage += 1;
-  [self displayPage:selectedPage];
-  [self enableDisableButtons];
-  
-  int max = MAX_PAGES;
-  max -= 1;
-  if ([playTimer isValid] && selectedPage == max) {
-    [playTimer invalidate];
-    playTimer = nil;
-  }
-}
-
-- (IBAction)moveToPreviousPage {
-  selectedPage -= 1;
-  [self displayPage:selectedPage];
-  [self enableDisableButtons];
-}
-
-- (void)enableDisableButtons {
-  if (playing) {
-    rewindButton.enabled = NO;
-    forwardButton.enabled = NO;
-  } else {
-    if (selectedPage > 0) {
-      rewindButton.enabled = YES;
-    } else {
-      rewindButton.enabled = NO;
-    }
-    
-    int max = MAX_PAGES;
-    max -= 1;
-    if (selectedPage < max) {
-      forwardButton.enabled = YES;
-    } else {
-      forwardButton.enabled = NO;
-    }
-  }
-
-}
-
-- (IBAction)togglePlayPause {
-  //playPauseButton.
-  if (playing) {
-    playing = NO;
-    [playTimer invalidate];
-  } else {
-    playing = YES;
-    playTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(moveToNextPage) userInfo:nil repeats:YES];
-  }
-  [self enableDisableButtons];
+- (IBAction)sliderMoved:(UISlider *)sender {
+  NSInteger page = floor(sender.value);
+  [self displayPage:page];
 }
 
 - (void)didReceiveMemoryWarning {

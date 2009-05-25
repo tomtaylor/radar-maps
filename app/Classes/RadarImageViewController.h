@@ -3,11 +3,7 @@
 
 @interface RadarImageViewController : UIViewController <TTURLRequestDelegate> {
   IBOutlet UIImageView *radarImageView;
-  IBOutlet UIProgressView *myProgressView;
-  IBOutlet TTSearchlightLabel *loadingLabel;
-  IBOutlet UIBarButtonItem *forwardButton;
-  IBOutlet UIBarButtonItem *rewindButton;
-  IBOutlet UIBarButtonItem *playPauseButton;
+  IBOutlet UISlider *theSlider;
   NSCalendar *calendar;
   NSDate *startDate;
   int selectedPage;
@@ -15,7 +11,6 @@
   BOOL playing;
   NSMutableDictionary *radarImages;
   NSData *labelData;
-  NSTimer *playTimer;
   NSString *shortLabel;
 }
 
@@ -24,12 +19,9 @@
 
 - (id)initWithShortLabel:(NSString *)shortLabel;
 
-- (IBAction)moveToNextPage;
-- (IBAction)moveToPreviousPage;
-- (IBAction)togglePlayPause;
+- (IBAction)sliderMoved:(UISlider *)sender;
 - (void)buildMapLabels;
 - (void)displayPage:(int)page;
-- (void)enableDisableButtons;
 
 - (void)fetchAllPages;
 - (void)queueLabelsForFetch;
