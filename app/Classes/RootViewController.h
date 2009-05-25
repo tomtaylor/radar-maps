@@ -1,7 +1,10 @@
 #import <UIKit/UIKit.h>
 
 @interface RootViewController : UITableViewController {
-  NSArray *radarAreasArray;
+  NSArray *countryAreas;
+  NSArray *englandAreas;
+  NSArray *scotlandAreas;
+  NSArray *walesAreas;
 }
 
 @end

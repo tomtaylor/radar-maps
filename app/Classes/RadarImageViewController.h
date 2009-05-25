@@ -3,7 +3,8 @@
 
 @interface RadarImageViewController : UIViewController <TTURLRequestDelegate> {
   IBOutlet UIImageView *radarImageView;
-  IBOutlet UISlider *theSlider;
+  IBOutlet UIToolbar *theToolbar;
+  UISlider *theSlider;
   NSCalendar *calendar;
   NSDate *startDate;
   int selectedPage;
@@ -19,7 +20,7 @@
 
 - (id)initWithShortLabel:(NSString *)shortLabel;
 
-- (IBAction)sliderMoved:(UISlider *)sender;
+- (void)sliderMoved:(UISlider *)sender;
 - (void)buildMapLabels;
 - (void)displayPage:(int)page;
 

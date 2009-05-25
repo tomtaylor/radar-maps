@@ -2,7 +2,7 @@
 
 #import "GDataXMLNode.h"
 
-#define MAX_PAGES 20;
+#define MAX_PAGES 18;
 
 @interface RadarImageViewController(Private)
 
@@ -41,14 +41,17 @@
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-//- (void)viewDidLoad {
-//  [self fetchAllPages];
-//  [super viewDidLoad];
-//}
-
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewDidLoad {
+  theSlider = [[UISlider alloc] initWithFrame:CGRectMake(20, 372, 280, 44)];
+  [theSlider setEnabled:NO];
+  [theSlider setValue:0.0f];
+  [theSlider setMinimumValue:0.0f];
+  [theSlider setMaximumValue:17.0f];
+  [theSlider setContinuous:YES];
+  [theSlider addTarget:self action:@selector(sliderMoved:) forControlEvents:UIControlEventValueChanged];
+  [self.view addSubview:theSlider];
   [self fetchAllPages];
-  [super viewDidAppear:animated];
+  [super viewDidLoad];
 }
 
 - (void)fetchAllPages {  
@@ -198,7 +201,7 @@
   }
 }
 
-- (IBAction)sliderMoved:(UISlider *)sender {
+- (void)sliderMoved:(UISlider *)sender {
   NSInteger page = floor(sender.value);
   [self displayPage:page];
 }
@@ -209,6 +212,7 @@
 }
 
 - (void)dealloc {
+  [theSlider release];
   [labelData release];
   [radarImages release];
   [[TTURLRequestQueue mainQueue] cancelRequestsWithDelegate:self];
